@@ -1,0 +1,11 @@
+<html>
+  <head>
+    <meta name="go-import" content="testdelete2.chrisrx.dev/group git https://github.com/ChrisRx/group">
+    <meta name="go-source" content="testdelete2.chrisrx.dev/group https://github.com/ChrisRx/group https://github.com/ChrisRx/group/tree/main{/dir} https://github.com/ChrisRx/group/tree/main{/dir}/{file}#L{line}">
+    <meta name="robots" content="noindex">
+    <meta http-equiv="refresh" content="0; url=https://pkg.go.dev/testdelete2.chrisrx.dev/group">
+  </head>
+  <body>
+    Redirecting to <a href="https://pkg.go.dev/testdelete2.chrisrx.dev/group">pkg.go.dev/testdelete2.chrisrx.dev/group</a>.
+  </body>
+</html>
