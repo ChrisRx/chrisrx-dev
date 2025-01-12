@@ -1,11 +1,11 @@
 <html>
   <head>
-    <meta name="go-import" content="chrisrx.dev/log git https://github.com/ChrisRx/lib-go">
-    <meta name="go-source" content="chrisrx.dev/log https://github.com/ChrisRx/lib-go https://github.com/ChrisRx/lib-go/tree/main/log{/dir} https://github.com/ChrisRx/lib-go/blob/main/log{/dir}/{file}#L{line}">
+    <meta name="go-import" content="go.chrisrx.dev/log git https://github.com/ChrisRx/log-go">
+    <meta name="go-source" content="go.chrisrx.dev/log https://github.com/ChrisRx/log-go https://github.com/ChrisRx/log-go/tree/main{/dir} https://github.com/ChrisRx/log-go/tree/main{/dir}/{file}#L{line}">
     <meta name="robots" content="noindex">
-    <meta http-equiv="refresh" content="0; url=https://pkg.go.dev/chrisrx.dev/log">
+    <meta http-equiv="refresh" content="0; url=https://pkg.go.dev/go.chrisrx.dev/log">
   </head>
   <body>
-    Redirecting to <a href="https://pkg.go.dev/chrisrx.dev/log">pkg.go.dev/chrisrx.dev/log</a>.
+    Redirecting to <a href="https://pkg.go.dev/go.chrisrx.dev/log">pkg.go.dev/go.chrisrx.dev/log</a>.
   </body>
 </html>
