@@ -1,0 +1,11 @@
+<html>
+  <head>
+    <meta name="go-import" content="go.chrisrx.dev/ifacegen git https://github.com/ChrisRx/ifacegen">
+    <meta name="go-source" content="go.chrisrx.dev/ifacegen https://github.com/ChrisRx/ifacegen https://github.com/ChrisRx/ifacegen/tree/main{/dir} https://github.com/ChrisRx/ifacegen/tree/main{/dir}/{file}#L{line}">
+    <meta name="robots" content="noindex">
+    <meta http-equiv="refresh" content="0; url=https://pkg.go.dev/go.chrisrx.dev/ifacegen">
+  </head>
+  <body>
+    Redirecting to <a href="https://pkg.go.dev/go.chrisrx.dev/ifacegen">pkg.go.dev/go.chrisrx.dev/ifacegen</a>.
+  </body>
+</html>
