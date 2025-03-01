@@ -1,0 +1,12 @@
+<html>
+  <head>
+    <meta name="go-import" content="go.chrisrx.dev/webos git https://github.com/ChrisRx/webos">
+    <meta name="go-source" content="go.chrisrx.dev/webos https://github.com/ChrisRx/webos https://github.com/ChrisRx/webos/tree/main{/dir} https://github.com/ChrisRx/webos/tree/main{/dir}/{file}#L{line}">
+    <meta name="robots" content="noindex">
+    <meta http-equiv="refresh" content="0; url=https://pkg.go.dev/go.chrisrx.dev/webos">
+  </head>
+  <body>
+    Redirecting to <a href="https://pkg.go.dev/go.chrisrx.dev/webos">pkg.go.dev/go.chrisrx.dev/webos</a>.
+  </body>
+</html>
+
