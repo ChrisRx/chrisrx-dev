@@ -1,0 +1,11 @@
+<html>
+  <head>
+    <meta name="go-import" content="go.chrisrx.dev/quake-kube git https://github.com/ChrisRx/quake-kube">
+    <meta name="go-source" content="go.chrisrx.dev/quake-kube https://github.com/ChrisRx/quake-kube https://github.com/ChrisRx/quake-kube/tree/main{/dir} https://github.com/ChrisRx/quake-kube/tree/main{/dir}/{file}#L{line}">
+    <meta name="robots" content="noindex">
+    <meta http-equiv="refresh" content="0; url=https://pkg.go.dev/go.chrisrx.dev/quake-kube">
+  </head>
+  <body>
+    Redirecting to <a href="https://pkg.go.dev/go.chrisrx.dev/quake-kube">pkg.go.dev/go.chrisrx.dev/quake-kube</a>.
+  </body>
+</html>
