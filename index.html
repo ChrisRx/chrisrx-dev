@@ -2,13 +2,159 @@
 <html>
   <head>
     <meta name="robots" content="noindex">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      html {
+        background-color: #000;
+      }
+      body {
+        margin: 0 auto;
+        padding: 0;
+        background-image: url("assets/bluebg.jpg");
+        background-repeat: repeat;
+        font-family: 'Comic Neue', cursive, sans-serif;
+        font-size: 2rem;
+        position: absolute;
+        width: 100%;
+      }
+      h2 {
+        color: red;
+      }
+      a {
+        color: green;
+        font-weight: bold;
+      }
+      marquee {
+        font-size: 4rem;
+        color: white;
+      }
+      table {
+        width: 100%;
+      }
+      td {
+        background-image: url("assets/clouds.jpg");
+        background-repeat: repeat;
+        text-align: center;
+      }
+      th {
+        background-image: url("assets/starry.jpg");
+        background-repeat: repeat;
+      }
+
+      .blink {
+        animation: blink-animation 0.5s infinite;
+      }
+      @keyframes blink-animation {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+      }
+      #main {
+        background-image: url("assets/space1.gif");
+        background-repeat: repeat;
+        padding: 1em;
+        margin: 1em;
+      }
+      </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    </script>
   </head>
   <body>
-    <h3>Packages</h3>
-    <ul>
-      </li><a href="https://pkg.go.dev/go.chrisrx.dev/group">go.chrisrx.dev/group</a></li>
-      </li><a href="https://pkg.go.dev/go.chrisrx.dev/leaselock">go.chrisrx.dev/leaselock</a></li>
-      </li><a href="https://pkg.go.dev/go.chrisrx.dev/x">go.chrisrx.dev/x</a></li>
-    </ul>
+
+    <div id="main">
+      <marquee class="blink">chrisrx.dev!!!!!!!!!!!!!!!</marquee>
+
+      <center>
+        <div style="height:131px; overflow:hidden;">
+          <img src="assets/skull.gif">
+          <img src="assets/skull.gif">
+          <img src="assets/skull.gif">
+          <img src="assets/skull.gif">
+          <img src="assets/skull.gif">
+          <img src="assets/skull.gif">
+          <img src="assets/skull.gif">
+          <img src="assets/skull.gif">
+          <img src="assets/skull.gif">
+          <img src="assets/skull.gif">
+          <img src="assets/skull.gif">
+          <img src="assets/skull.gif">
+          <img src="assets/skull.gif">
+          <img src="assets/skull.gif">
+          <img src="assets/skull.gif">
+          <img src="assets/skull.gif">
+          <img src="assets/skull.gif">
+        </div>
+
+        <div>
+          <img src="assets/castle.gif">
+          <img src="assets/clam.gif">
+          <img src="assets/diver.png">
+          <img src="assets/clam.gif">
+          <img src="assets/castle.gif">
+        </div>
+        <div class="doot">
+          <img src="assets/doot.gif">
+          <img src="assets/doot.gif">
+          <img src="assets/doot.gif">
+        </div>
+      </center>
+      <div style="width: 50%;margin: 0 auto;justify-content: center;">
+        <table border=2>
+          <tr>
+            <th><h2>Packages</h2></th>
+          </tr>
+          <tr>
+            <td><a href="https://pkg.go.dev/go.chrisrx.dev/group">go.chrisrx.dev/group</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://pkg.go.dev/go.chrisrx.dev/leaselock">go.chrisrx.dev/leaselock</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://pkg.go.dev/go.chrisrx.dev/x">go.chrisrx.dev/x</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://pkg.go.dev/go.chrisrx.dev/x/assert">go.chrisrx.dev/x/assert</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://pkg.go.dev/go.chrisrx.dev/x/chans">go.chrisrx.dev/x/chans</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://pkg.go.dev/go.chrisrx.dev/x/env">go.chrisrx.dev/x/env</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://pkg.go.dev/go.chrisrx.dev/x/must">go.chrisrx.dev/x/must</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://pkg.go.dev/go.chrisrx.dev/x/ptr">go.chrisrx.dev/x/ptr</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://pkg.go.dev/go.chrisrx.dev/x/safe">go.chrisrx.dev/x/safe</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://pkg.go.dev/go.chrisrx.dev/x/set">go.chrisrx.dev/x/set</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://pkg.go.dev/go.chrisrx.dev/x/sync">go.chrisrx.dev/x/sync</a></td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+    <audio src="assets/topgun.mp3" id="player"></audio>
+    <script type="text/javascript">
+      $(document).ready(function(){
+          $(".doot").click(function() {
+            player = document.getElementById("player");
+            if (player.paused) {
+              player.play();
+            } else {
+              player.pause();
+            }
+          });
+      });
+    </script>
   </body>
 </html>
