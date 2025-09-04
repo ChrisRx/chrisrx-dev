@@ -1,0 +1,20 @@
+version: '3'
+
+env:
+  LOCAL_DEV_ADDR: localhost:8080
+
+tasks:
+  dev:
+    cmds:
+      - templ generate
+        --watch
+        --proxy="http://{{ .LOCAL_DEV_ADDR }}"
+        --open-browser=false
+        --cmd="go run ."
+
+  generate:
+    aliases: [gen]
+    env:
+      LOCAL_DEV_OUTPUT: index.html
+    cmds:
+      - templ generate && go run *.go

@@ -1,0 +1,22 @@
+package components
+
+templ Page() {
+	<!DOCTYPE html>
+	<html>
+		{ children... }
+	</html>
+}
+
+templ Head(opts ...Option) {
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		{ children... }
+	</head>
+}
+
+templ Body(opts ...Option) {
+	<body { NewAttrs(opts)... }>
+		{ children... }
+	</body>
+}

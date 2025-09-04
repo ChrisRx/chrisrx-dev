@@ -1,9 +1,128 @@
-<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&amp;display=swap" rel="stylesheet"><script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script><script type="text/javascript">
+package pages
+
+import "github.com/ChrisRx/chrisrx-dev/components"
+
+var packages = []string{
+	"go.chrisrx.dev/x/assert",
+	"go.chrisrx.dev/x/backoff",
+	"go.chrisrx.dev/x/chans",
+	"go.chrisrx.dev/x/context",
+	"go.chrisrx.dev/x/env",
+	"go.chrisrx.dev/x/expr",
+	"go.chrisrx.dev/x/future",
+	"go.chrisrx.dev/x/group",
+	"go.chrisrx.dev/x/safe",
+	"go.chrisrx.dev/x/set",
+	"go.chrisrx.dev/x/sync",
+}
+
+templ Index() {
+	@components.Page() {
+		@components.Head() {
+			@style()
+		}
+		@components.Body() {
+			<div class="sticky-container" id="stickyContainer">
+				<div class="webgl-section" id="webglSection">
+					<div class="canvas-container" id="canvasContainer">
+						<canvas id="space"></canvas>
+					</div>
+				</div>
+			</div>
+			@warpspeed()
+			<div class="grid grid-cols-4">
+				<div class="">
+					<img src="../assets/images/skull.gif" class="h-full float-right object-cover" alt=""/>
+				</div>
+				<div class="col-span-2">
+					<div class="mx-auto flex max-w-3xl h-screen items-center -z-1">
+						@components.Card(components.Class("bg-silver", "border-1", "border-grey", "w-full", "max-h-screen")) {
+							@components.Header(components.Class("bg-windows-blue h-[22px]")) {
+								@components.Title(components.Class("text-[#f5f5f5]")) {
+									<div class="h-full flex items-center font-bold text-[6px] ml-[2px]">
+										Netscape Navigator 3.0
+									</div>
+								}
+								<img class="object-right object-fill m-[2px]" src="../assets/images/btn-close@2x.png"/>
+							}
+							<div class="flex">
+								<div class="w-full bg-silver">
+									<div class="flex flex-row w-full min-h-[24px] items-center pl-[5px] netscape-toolbar">
+										<div class="text-[9px]">
+											Location:
+										</div>
+										<div class="bg-white w-full inset-shadow-[0_0_0_1px_#000] border-t-1 border-t-[#808080] border-l-1 border-l-[#808080] pl-[2px] m-[3px] text-[9px] text-nowrap overflow-hidden">
+											https://go.chrisrx.dev
+										</div>
+									</div>
+									<div class=" flex flex-row w-full min-h-[24px] items-center pl-[5px] netscape-toolbar">
+										<div id="whats-new" class="netscape-button">What's New</div>
+										<div x-data="" @click="toggleWarpSpeed" id="whats-cool" class="netscape-button">What's Cool</div>
+									</div>
+								</div>
+								<div class="min-h-[48px]">
+									<img class="object-fill aspect-square min-w-[48px] min-h-[48px]" height="40" width="40" src="../assets/images/netscape.gif"/>
+								</div>
+							</div>
+							@components.Content(components.Class("overflow-auto", "h-3/4", "h-[60vh]", "overscroll-none", "bg-blue-maze")) {
+								<div class="w-full border-t-1 border-t-black border-l-1 border-l-black border-r-1 border-r-grey border-b-1 border-b-grey">
+									<div>
+										<img src="../assets/images/under-construction.gif" class="w-full object-contain object-center"/>
+									</div>
+									<div x-data="" @click="toggle" class="marquee">
+										for range 2 {
+											<div>
+												for range 3 {
+													<img src="../assets/images/doot.gif" class="max-w-none h-full object-scale-down object-center"/>
+												}
+											</div>
+										}
+									</div>
+									<div>
+										<img src="../assets/images/bar.gif" class="w-full object-contain object-center"/>
+									</div>
+									<div class="p-5">
+										<div class="flex flex-row">
+											<table class="w-full text-2x1">
+												<tr>
+													<th class="bg-stars"><h2 class="font-comic-sans text-red-600">Packages</h2></th>
+												</tr>
+												for _, pkg := range packages {
+													<tr>
+														<td class="bg-clouds font-comic-sans font-bold text-green-700 text-center"><a href={ templ.SafeURL("https://pkg.go.dev/" + pkg) }>{ pkg }</a></td>
+													</tr>
+												}
+											</table>
+										</div>
+									</div>
+								</div>
+							}
+						}
+					</div>
+				</div>
+				<div class="">
+					<img src="../assets/images/skull.gif" class="h-full object-cover" alt=""/>
+				</div>
+			</div>
+			<audio src="assets/topgun.mp3" id="player"></audio>
+		}
+	}
+}
+
+templ style() {
+	<link rel="preconnect" href="https://fonts.googleapis.com"/>
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+	<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet"/>
+	<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"/>
+	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+	<script type="text/javascript">
 		function toggle(e) {
 			player = document.getElementById("player");
 			player.paused ? player.play() : player.pause();
 		}
-	</script><style type="text/tailwindcss">
+	</script>
+	<style type="text/tailwindcss">
 		* {
 			/* https://www.cursors-4u.com/cursor/2006/06/09/spe115.html */
 			cursor: url(../assets/spe115.cur), auto !important;
@@ -121,7 +240,12 @@
 							 text-black;
 			}
 		}
-	</style></head> <body><div class="sticky-container" id="stickyContainer"><div class="webgl-section" id="webglSection"><div class="canvas-container" id="canvasContainer"><canvas id="space"></canvas></div></div></div><style>
+	</style>
+}
+
+// Adapted from https://codepen.io/filipz/pen/jEENJww
+templ warpspeed() {
+	<style>
 		.sticky-container {
 			position: absolute;
 			height: 100%;
@@ -160,7 +284,8 @@
 			height: 100%;
 			display: block;
 		}
-	</style><script type="text/javascript">
+	</style>
+	<script type="text/javascript">
 		// Setup canvas and context
 		const canvas = document.getElementById("space");
 		const ctx = canvas.getContext("2d");
@@ -301,4 +426,5 @@
 			centerX = canvas.width / 2;
 			centerY = canvas.height / 2;
 		});
-	</script> <div class="grid grid-cols-4"><div class=""><img src="../assets/images/skull.gif" class="h-full float-right object-cover" alt=""></div><div class="col-span-2"><div class="mx-auto flex max-w-3xl h-screen items-center -z-1"><div class="max-h-screen shadow-xl w-full bg-card text-card-foreground bg-silver border-1 border-grey"><div class="justify-between bg-windows-blue h-[22px] flex flex-row"><div class="text-[#f5f5f5]"><div class="h-full flex items-center font-bold text-[6px] ml-[2px]">Netscape Navigator 3.0</div></div> <img class="object-right object-fill m-[2px]" src="../assets/images/btn-close@2x.png"></div> <div class="flex"><div class="w-full bg-silver"><div class="flex flex-row w-full min-h-[24px] items-center pl-[5px] netscape-toolbar"><div class="text-[9px]">Location:</div><div class="bg-white w-full inset-shadow-[0_0_0_1px_#000] border-t-1 border-t-[#808080] border-l-1 border-l-[#808080] pl-[2px] m-[3px] text-[9px] text-nowrap overflow-hidden">https://go.chrisrx.dev</div></div><div class=" flex flex-row w-full min-h-[24px] items-center pl-[5px] netscape-toolbar"><div id="whats-new" class="netscape-button">What's New</div><div x-data="" @click="toggleWarpSpeed" id="whats-cool" class="netscape-button">What's Cool</div></div></div><div class="min-h-[48px]"><img class="object-fill aspect-square min-w-[48px] min-h-[48px]" height="40" width="40" src="../assets/images/netscape.gif"></div></div><div class="overscroll-none bg-blue-maze p6 overflow-auto h-3/4 h-[60vh]"><div class="w-full border-t-1 border-t-black border-l-1 border-l-black border-r-1 border-r-grey border-b-1 border-b-grey"><div><img src="../assets/images/under-construction.gif" class="w-full object-contain object-center"></div><div x-data="" @click="toggle" class="marquee"><div><img src="../assets/images/doot.gif" class="max-w-none h-full object-scale-down object-center"><img src="../assets/images/doot.gif" class="max-w-none h-full object-scale-down object-center"><img src="../assets/images/doot.gif" class="max-w-none h-full object-scale-down object-center"></div><div><img src="../assets/images/doot.gif" class="max-w-none h-full object-scale-down object-center"><img src="../assets/images/doot.gif" class="max-w-none h-full object-scale-down object-center"><img src="../assets/images/doot.gif" class="max-w-none h-full object-scale-down object-center"></div></div><div><img src="../assets/images/bar.gif" class="w-full object-contain object-center"></div><div class="p-5"><div class="flex flex-row"><table class="w-full text-2x1"><tr><th class="bg-stars"><h2 class="font-comic-sans text-red-600">Packages</h2></th></tr><tr><td class="bg-clouds font-comic-sans font-bold text-green-700 text-center"><a href="https://pkg.go.dev/go.chrisrx.dev/x/assert">go.chrisrx.dev/x/assert</a></td></tr><tr><td class="bg-clouds font-comic-sans font-bold text-green-700 text-center"><a href="https://pkg.go.dev/go.chrisrx.dev/x/backoff">go.chrisrx.dev/x/backoff</a></td></tr><tr><td class="bg-clouds font-comic-sans font-bold text-green-700 text-center"><a href="https://pkg.go.dev/go.chrisrx.dev/x/chans">go.chrisrx.dev/x/chans</a></td></tr><tr><td class="bg-clouds font-comic-sans font-bold text-green-700 text-center"><a href="https://pkg.go.dev/go.chrisrx.dev/x/context">go.chrisrx.dev/x/context</a></td></tr><tr><td class="bg-clouds font-comic-sans font-bold text-green-700 text-center"><a href="https://pkg.go.dev/go.chrisrx.dev/x/env">go.chrisrx.dev/x/env</a></td></tr><tr><td class="bg-clouds font-comic-sans font-bold text-green-700 text-center"><a href="https://pkg.go.dev/go.chrisrx.dev/x/expr">go.chrisrx.dev/x/expr</a></td></tr><tr><td class="bg-clouds font-comic-sans font-bold text-green-700 text-center"><a href="https://pkg.go.dev/go.chrisrx.dev/x/future">go.chrisrx.dev/x/future</a></td></tr><tr><td class="bg-clouds font-comic-sans font-bold text-green-700 text-center"><a href="https://pkg.go.dev/go.chrisrx.dev/x/group">go.chrisrx.dev/x/group</a></td></tr><tr><td class="bg-clouds font-comic-sans font-bold text-green-700 text-center"><a href="https://pkg.go.dev/go.chrisrx.dev/x/safe">go.chrisrx.dev/x/safe</a></td></tr><tr><td class="bg-clouds font-comic-sans font-bold text-green-700 text-center"><a href="https://pkg.go.dev/go.chrisrx.dev/x/set">go.chrisrx.dev/x/set</a></td></tr><tr><td class="bg-clouds font-comic-sans font-bold text-green-700 text-center"><a href="https://pkg.go.dev/go.chrisrx.dev/x/sync">go.chrisrx.dev/x/sync</a></td></tr></table></div></div></div></div></div></div></div><div class=""><img src="../assets/images/skull.gif" class="h-full object-cover" alt=""></div></div><audio src="assets/topgun.mp3" id="player"></audio></body></html>
+	</script>
+}
