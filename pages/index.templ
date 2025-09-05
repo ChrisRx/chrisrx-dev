@@ -426,12 +426,12 @@ templ warpspeed() {
 				id = setInterval(function() {
 					if (warpSpeed == 0) {
 						warpSpeed = 0.25;
-					} else if (warpSpeed <= 0.99) {
+					} else if (warpSpeed <= 0.70) {
 						warpSpeed = 1 - Math.exp(-2 * warpSpeed);
 					} else {
+						warpSpeed = 0.80;
 						clearInterval(id)
 					}
-					console.log("warpSpeed:", warpSpeed)
 				}, 100)
 			} else {
 				animationActive = false;
