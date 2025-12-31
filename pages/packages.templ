@@ -1,0 +1,49 @@
+package pages
+
+var packages = []string{
+	"go.chrisrx.dev/x/assert",
+	"go.chrisrx.dev/x/backoff",
+	"go.chrisrx.dev/x/chans",
+	"go.chrisrx.dev/x/context",
+	"go.chrisrx.dev/x/env",
+	"go.chrisrx.dev/x/expr",
+	"go.chrisrx.dev/x/future",
+	"go.chrisrx.dev/x/group",
+	"go.chrisrx.dev/x/safe",
+	"go.chrisrx.dev/x/set",
+	"go.chrisrx.dev/x/sync",
+}
+
+templ Packages() {
+  <div class="w-full border-t-1 border-t-black border-l-1 border-l-black border-r-1 border-r-grey border-b-1 border-b-grey">
+    <div>
+      <img src="../assets/images/under-construction.gif" class="w-full object-contain object-center"/>
+    </div>
+    <div x-data="" @click="toggle" class="marquee">
+      for range 2 {
+        <div>
+          for range 3 {
+            <img src="../assets/images/doot.gif" class="max-w-none h-full object-scale-down object-center"/>
+          }
+        </div>
+      }
+    </div>
+    <div>
+      <img src="../assets/images/bar.gif" class="w-full object-contain object-center"/>
+    </div>
+    <div class="p-5">
+      <div class="flex flex-row">
+        <table class="w-full text-2x1">
+          <tr>
+            <th class="bg-stars"><h2 class="font-comic-sans text-red-600">Packages</h2></th>
+          </tr>
+          for _, pkg := range packages {
+            <tr>
+              <td class="bg-clouds font-comic-sans font-bold text-green-700 text-center"><a href={ templ.SafeURL("https://pkg.go.dev/" + pkg) }>{ pkg }</a></td>
+            </tr>
+          }
+        </table>
+      </div>
+    </div>
+  </div>
+}

@@ -15,6 +15,6 @@ tasks:
   generate:
     aliases: [gen]
     env:
-      LOCAL_DEV_OUTPUT: index.html
+      LOCAL_DEV_OUTPUT: true
     cmds:
       - templ generate && go run *.go

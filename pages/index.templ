@@ -2,20 +2,6 @@ package pages
 
 import "github.com/ChrisRx/chrisrx-dev/components"
 
-var packages = []string{
-	"go.chrisrx.dev/x/assert",
-	"go.chrisrx.dev/x/backoff",
-	"go.chrisrx.dev/x/chans",
-	"go.chrisrx.dev/x/context",
-	"go.chrisrx.dev/x/env",
-	"go.chrisrx.dev/x/expr",
-	"go.chrisrx.dev/x/future",
-	"go.chrisrx.dev/x/group",
-	"go.chrisrx.dev/x/safe",
-	"go.chrisrx.dev/x/set",
-	"go.chrisrx.dev/x/sync",
-}
-
 templ Index() {
 	@components.Page() {
 		@components.Head() {
@@ -58,9 +44,10 @@ templ Index() {
 											https://go.chrisrx.dev
 										</div>
 									</div>
-									<div class=" flex flex-row w-full min-h-[24px] items-center pl-[5px] netscape-toolbar">
-										<div id="whats-new" class="netscape-button">What's New</div>
-										<div x-data="" @click="toggleWarpSpeed" id="whats-cool" class="netscape-button">What's Cool</div>
+									<div class="flex flex-row w-full min-h-[24px] items-center pl-[5px] netscape-toolbar">
+										<div hx-get="/blog.html" hx-target="#content" id="whats-new" class="netscape-button">What's New</div>
+										<div hx-get="/packages.html" hx-target="#content" id="whats-cool" class="netscape-button">What's Cool</div>
+										<div hx-on:click="toggleWarpSpeed()" id="whats-cool" class="netscape-button">Hit It</div>
 									</div>
 								</div>
 								<div class="min-h-[48px]">
@@ -68,37 +55,12 @@ templ Index() {
 								</div>
 							</div>
 							@components.Content(components.Class("overflow-auto", "h-3/4", "h-[60vh]", "overscroll-none", "bg-blue-maze")) {
-								<div class="w-full border-t-1 border-t-black border-l-1 border-l-black border-r-1 border-r-grey border-b-1 border-b-grey">
-									<div>
-										<img src="../assets/images/under-construction.gif" class="w-full object-contain object-center"/>
-									</div>
-									<div x-data="" @click="toggle" class="marquee">
-										for range 2 {
-											<div>
-												for range 3 {
-													<img src="../assets/images/doot.gif" class="max-w-none h-full object-scale-down object-center"/>
-												}
-											</div>
-										}
-									</div>
-									<div>
-										<img src="../assets/images/bar.gif" class="w-full object-contain object-center"/>
-									</div>
-									<div class="p-5">
-										<div class="flex flex-row">
-											<table class="w-full text-2x1">
-												<tr>
-													<th class="bg-stars"><h2 class="font-comic-sans text-red-600">Packages</h2></th>
-												</tr>
-												for _, pkg := range packages {
-													<tr>
-														<td class="bg-clouds font-comic-sans font-bold text-green-700 text-center"><a href={ templ.SafeURL("https://pkg.go.dev/" + pkg) }>{ pkg }</a></td>
-													</tr>
-												}
-											</table>
-										</div>
-									</div>
-								</div>
+                <div id="content" class="h-full">
+                  <div hx-get="/blog.html"
+                      hx-trigger="load"
+                      hx-swap="outerHTML">
+                  </div>
+                </div>
 							}
 						}
 					</div>
@@ -117,6 +79,7 @@ templ style() {
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 	<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet"/>
 	<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet"/>
+	<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"></script>
 	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 	<script type="text/javascript">
@@ -231,6 +194,8 @@ templ style() {
 				height: 100%;
 			}
 		}
+
+
 
 		@tailwind base;
 		@tailwind components;

@@ -2,5 +2,5 @@ github.com/a-h/templ v0.3.943 h1:o+mT/4yqhZ33F3ootBiHwaY4HM5EVaOJfIshvd5UNTY=
 github.com/a-h/templ v0.3.943/go.mod h1:oCZcnKRf5jjsGpf2yELzQfodLphd2mwecwG4Crk5HBo=
 github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=
 github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
-go.chrisrx.dev/x v0.0.0-20250827122126-dfd3e197e246 h1:0l1POHAjn+BZ0Hgp+ubkyaKOe0zmLu55U/tMJ2GIRP4=
-go.chrisrx.dev/x v0.0.0-20250827122126-dfd3e197e246/go.mod h1:Cl3gahw2YJZr/CHWXxuJ0cKzYg6QuCzx26bvIhk9KTw=
+go.chrisrx.dev/x v0.0.0-20251229175656-e56f50fb46d2 h1:k15hdVDtlO36bvlSMH4GWNm5kQ+yCu26qyqclC+hBQ8=
+go.chrisrx.dev/x v0.0.0-20251229175656-e56f50fb46d2/go.mod h1:ccxgg3MwWCfeONmPkQcpOIN2zeSTOQ38kYZlrw2Ya0w=
