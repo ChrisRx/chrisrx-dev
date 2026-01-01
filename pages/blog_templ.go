@@ -8,12 +8,24 @@ package pages
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "time"
+import (
+	"context"
+	"io"
+	"time"
+
+	"github.com/yuin/goldmark"
+)
 
 type Post struct {
-	Title     string
-	Published time.Time
-	Content   string
+	Title   string
+	Date    time.Time
+	Content string
+}
+
+func (p Post) Render() templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, w io.Writer) (err error) {
+		return goldmark.Convert([]byte(p.Content), w)
+	})
 }
 
 func Blog(posts []Post) templ.Component {
@@ -37,7 +49,7 @@ func Blog(posts []Post) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"w-full h-full border-t-1 border-t-black border-l-1 border-l-black border-r-1 border-r-grey border-b-1 border-b-grey p-5\"><div><img src=\"../assets/images/under-construction.gif\" class=\"w-full object-contain object-center\"></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<style type=\"text/tailwindcss\">\n\t\t@tailwind components;\n\t\t@layer components {\n\t\t\t.post p {\n\t\t\t\t@apply text-base font-comic-sans;\n\t\t\t}\n\t\t\t.post pre:has(code) {\n\t\t\t\t@apply text-sm m-5 p-5;\n\t\t\t\tbackground-color: rgba(33, 33, 33, 0.83);\n\t\t\t\toverflow-y: auto;\n\t\t\t}\n\t\t\t.post a {\n\t\t\t\t@apply text-purple-400;\n\t\t\t\ttext-decoration: underline;\n\t\t\t}\n\t\t}\n\t</style><div class=\"p-5\"><div><img src=\"../assets/images/under-construction.gif\" class=\"w-full object-contain object-center\"></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -49,7 +61,7 @@ func Blog(posts []Post) templ.Component {
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(p.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/blog.templ`, Line: 18, Col: 38}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/blog.templ`, Line: 47, Col: 34}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -60,28 +72,23 @@ func Blog(posts []Post) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(p.Published.Format(time.RFC1123))
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(p.Date.Format(time.RFC1123))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/blog.templ`, Line: 19, Col: 72}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/blog.templ`, Line: 48, Col: 63}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</h3><p class=\"text-xs\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</h3><div class=\"post\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var4 string
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(p.Content)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/blog.templ`, Line: 20, Col: 38}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+			templ_7745c5c3_Err = p.Render().Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</p></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

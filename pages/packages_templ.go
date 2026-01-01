@@ -43,7 +43,7 @@ func Packages() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"w-full border-t-1 border-t-black border-l-1 border-l-black border-r-1 border-r-grey border-b-1 border-b-grey\"><div><img src=\"../assets/images/under-construction.gif\" class=\"w-full object-contain object-center\"></div><div x-data=\"\" @click=\"toggle\" class=\"marquee\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div><div><img src=\"../assets/images/under-construction.gif\" class=\"w-full object-contain object-center\"></div><div x-data=\"\" @click=\"toggle\" class=\"marquee\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

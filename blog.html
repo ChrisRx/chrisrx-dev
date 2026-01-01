@@ -1,3 +1,32 @@
-<div class="w-full h-full border-t-1 border-t-black border-l-1 border-l-black border-r-1 border-r-grey border-b-1 border-b-grey p-5"><div><img src="../assets/images/under-construction.gif" class="w-full object-contain object-center"></div><div class="text-white"><h1 class="text-3xl">First entry and trying out htmx</h1><h3 class="text-md">Published Wed, 31 Dec 2025 11:30:00 EST</h3><p class="text-xs">Switched from using alpine.js to using htmx and changed the Netscape
-browser buttons to navigate to different pages. Seems pretty neat so far!
-</p></div></div>
+<style type="text/tailwindcss">
+		@tailwind components;
+		@layer components {
+			.post p {
+				@apply text-base font-comic-sans;
+			}
+			.post pre:has(code) {
+				@apply text-sm m-5 p-5;
+				background-color: rgba(33, 33, 33, 0.83);
+				overflow-y: auto;
+			}
+			.post a {
+				@apply text-purple-400;
+				text-decoration: underline;
+			}
+		}
+	</style><div class="p-5"><div><img src="../assets/images/under-construction.gif" class="w-full object-contain object-center"></div><div class="text-white"><h1 class="text-3xl">Blog supports markdown</h1><h3 class="text-md">Published Thu, 01 Jan 2026 09:30:00 UTC</h3><div class="post"><p>Blog posts are now being parsed out of files and the content supports markdown. I'm using the <a href="https://github.com/yuin/goldmark">goldmark</a> package to render the content as a <code>templ.Component</code>:</p>
+<pre><code class="language-go">type Post struct {
+	Title     string
+	Date      time.Time
+	Content   string
+}
+
+func (p Post) Render() templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, w io.Writer) (err error) {
+        return goldmark.Convert([]byte(p.Content), w)
+	})
+}
+</code></pre>
+</div></div><div class="text-white"><h1 class="text-3xl">First entry and trying out htmx</h1><h3 class="text-md">Published Wed, 31 Dec 2025 16:30:00 UTC</h3><div class="post"><p>Switched from using alpine.js to using htmx and changed the Netscape
+browser buttons to navigate to different pages. Seems pretty neat so far.</p>
+</div></div></div>

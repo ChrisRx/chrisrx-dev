@@ -1,6 +1,10 @@
 github.com/a-h/templ v0.3.943 h1:o+mT/4yqhZ33F3ootBiHwaY4HM5EVaOJfIshvd5UNTY=
 github.com/a-h/templ v0.3.943/go.mod h1:oCZcnKRf5jjsGpf2yELzQfodLphd2mwecwG4Crk5HBo=
+github.com/goccy/go-yaml v1.19.1 h1:3rG3+v8pkhRqoQ/88NYNMHYVGYztCOCIZ7UQhu7H+NE=
+github.com/goccy/go-yaml v1.19.1/go.mod h1:XBurs7gK8ATbW4ZPGKgcbrY1Br56PdM69F7LkFRi1kA=
 github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=
 github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
-go.chrisrx.dev/x v0.0.0-20251229175656-e56f50fb46d2 h1:k15hdVDtlO36bvlSMH4GWNm5kQ+yCu26qyqclC+hBQ8=
-go.chrisrx.dev/x v0.0.0-20251229175656-e56f50fb46d2/go.mod h1:ccxgg3MwWCfeONmPkQcpOIN2zeSTOQ38kYZlrw2Ya0w=
+github.com/yuin/goldmark v1.7.13 h1:GPddIs617DnBLFFVJFgpo1aBfe/4xcvMc3SB5t/D0pA=
+github.com/yuin/goldmark v1.7.13/go.mod h1:ip/1k0VRfGynBgxOz0yCqHrbZXhcjxyuS66Brc7iBKg=
+go.chrisrx.dev/x v0.0.0-20251231193111-07187983b3b2 h1:BwKcwFOeb/BOqRgG+EpH7vzCmKd2Eb/RZFIFwpHHof0=
+go.chrisrx.dev/x v0.0.0-20251231193111-07187983b3b2/go.mod h1:ccxgg3MwWCfeONmPkQcpOIN2zeSTOQ38kYZlrw2Ya0w=

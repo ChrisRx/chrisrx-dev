@@ -1,24 +1,55 @@
 package pages
 
-import "time"
+import (
+	"context"
+	"io"
+	"time"
+
+	"github.com/yuin/goldmark"
+)
 
 type Post struct {
 	Title     string
-	Published time.Time
+	Date      time.Time
 	Content   string
 }
 
+func (p Post) Render() templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, w io.Writer) (err error) {
+		return goldmark.Convert([]byte(p.Content), w)
+	})
+}
+
 templ Blog(posts []Post) {
-  <div class="w-full h-full border-t-1 border-t-black border-l-1 border-l-black border-r-1 border-r-grey border-b-1 border-b-grey p-5">
-    <div>
-      <img src="../assets/images/under-construction.gif" class="w-full object-contain object-center"/>
-    </div>
-    for _, p := range posts {
-      <div class="text-white">
-        <h1 class="text-3xl">{ p.Title }</h1>
-        <h3 class="text-md">Published { p.Published.Format(time.RFC1123) }</h3>
-        <p class="text-xs">{ p.Content }</p>
-      </div>
-    }
-  </div>
+	<style type="text/tailwindcss">
+		@tailwind components;
+		@layer components {
+			.post p {
+				@apply text-base font-comic-sans;
+			}
+			.post pre:has(code) {
+				@apply text-sm m-5 p-5;
+				background-color: rgba(33, 33, 33, 0.83);
+				overflow-y: auto;
+			}
+			.post a {
+				@apply text-purple-400;
+				text-decoration: underline;
+			}
+		}
+	</style>
+	<div class="p-5">
+		<div>
+			<img src="../assets/images/under-construction.gif" class="w-full object-contain object-center"/>
+		</div>
+		for _, p := range posts {
+			<div class="text-white">
+				<h1 class="text-3xl">{ p.Title }</h1>
+				<h3 class="text-md">Published { p.Date.Format(time.RFC1123) }</h3>
+				<div class="post">
+					@p.Render()
+				</div>
+			</div>
+		}
+	</div>
 }

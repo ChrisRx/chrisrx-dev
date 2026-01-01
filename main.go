@@ -3,17 +3,20 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"io/fs"
 	"log"
 	"net"
 	"net/http"
 	"os"
-	"time"
+	"path/filepath"
 
 	"github.com/a-h/templ"
+	"github.com/goccy/go-yaml"
 	"go.chrisrx.dev/x/context"
 	"go.chrisrx.dev/x/env"
 	"go.chrisrx.dev/x/errors"
-	"go.chrisrx.dev/x/strings"
+	"go.chrisrx.dev/x/must"
+	"go.chrisrx.dev/x/slices"
 
 	"github.com/ChrisRx/chrisrx-dev/pages"
 )
@@ -27,14 +30,16 @@ var opts = env.MustParseFor[struct {
 var UserKey = context.Key[string]()
 
 func main() {
+	ctx := context.Shutdown()
+
+	posts := must.Ok(ReadPosts("posts/"))
 	if opts.Output {
-		if err := generate(); err != nil {
+		if err := generate(ctx, posts); err != nil {
 			log.Fatal(err)
 		}
 		return
 	}
 
-	ctx := context.Shutdown()
 	s := &http.Server{
 		Addr: opts.Addr,
 		Handler: func() http.Handler {
@@ -61,38 +66,69 @@ func main() {
 	}
 }
 
-var posts = []pages.Post{
-	{
-		Title:     "First entry and trying out htmx",
-		Published: time.Date(2025, 12, 31, 11, 30, 0, 0, time.Local),
-		Content: strings.Dedent(`
-			Switched from using alpine.js to using htmx and changed the Netscape
-			browser buttons to navigate to different pages. Seems pretty neat so far!
-		`),
-	},
-}
-
-func generate() error {
+func generate(ctx context.Context, posts []pages.Post) error {
 	var b bytes.Buffer
-	if err := pages.Index().Render(context.Background(), &b); err != nil {
+	if err := pages.Index().Render(ctx, &b); err != nil {
 		return err
 	}
 	if err := os.WriteFile("index.html", b.Bytes(), 0755); err != nil {
 		return err
 	}
 	b.Reset()
-	if err := pages.Blog(posts).Render(context.Background(), &b); err != nil {
+	if err := pages.Blog(posts).Render(ctx, &b); err != nil {
 		return err
 	}
 	if err := os.WriteFile("blog.html", b.Bytes(), 0755); err != nil {
 		return err
 	}
 	b.Reset()
-	if err := pages.Packages().Render(context.Background(), &b); err != nil {
+	if err := pages.Packages().Render(ctx, &b); err != nil {
 		return err
 	}
 	if err := os.WriteFile("packages.html", b.Bytes(), 0755); err != nil {
 		return err
 	}
 	return nil
+}
+
+func ReadPosts(path string) (posts []pages.Post, _ error) {
+	if err := filepath.WalkDir(path, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if filepath.Ext(path) != ".md" {
+			return nil
+		}
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		data = bytes.TrimPrefix(data, []byte("---\n"))
+		parts := bytes.SplitN(data, []byte("---"), 2)
+		if len(parts) != 2 {
+			return fmt.Errorf("missing header")
+		}
+
+		var post pages.Post
+		if err := yaml.Unmarshal(parts[0], &post); err != nil {
+			return err
+		}
+		post.Content = string(parts[1])
+		posts = append(posts, post)
+		return nil
+
+	}); err != nil {
+		return nil, err
+	}
+	slices.SortFunc(posts, func(x, y pages.Post) int {
+		switch {
+		case x.Date.Equal(y.Date):
+			return 0
+		case x.Date.Before(y.Date):
+			return 1
+		default:
+			return -1
+		}
+	})
+	return posts, nil
 }
