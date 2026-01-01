@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"text/template"
 
 	"github.com/a-h/templ"
 	"github.com/goccy/go-yaml"
@@ -71,25 +72,64 @@ func generate(ctx context.Context, posts []pages.Post) error {
 	if err := pages.Index().Render(ctx, &b); err != nil {
 		return err
 	}
-	if err := os.WriteFile("index.html", b.Bytes(), 0755); err != nil {
+	if err := os.WriteFile("index.html", b.Bytes(), 0644); err != nil {
 		return err
 	}
 	b.Reset()
 	if err := pages.Blog(posts).Render(ctx, &b); err != nil {
 		return err
 	}
-	if err := os.WriteFile("blog.html", b.Bytes(), 0755); err != nil {
+	if err := os.WriteFile("blog.html", b.Bytes(), 0644); err != nil {
 		return err
 	}
 	b.Reset()
 	if err := pages.Packages().Render(ctx, &b); err != nil {
 		return err
 	}
-	if err := os.WriteFile("packages.html", b.Bytes(), 0755); err != nil {
+	if err := os.WriteFile("packages.html", b.Bytes(), 0644); err != nil {
 		return err
+	}
+	modules := []struct {
+		Name, Repo string
+	}{
+		{Name: "ptr", Repo: "ptr-go"},
+		{Name: "x", Repo: "exp"},
+		{Name: "leaselock", Repo: "leaselock"},
+		{Name: "log", Repo: "log-go"},
+		{Name: "group", Repo: "group-go"},
+		{Name: "quake-kube", Repo: "quake-kube"},
+		{Name: "result", Repo: "result-go"},
+		{Name: "run", Repo: "run-go"},
+		{Name: "tools", Repo: "tools-go"},
+		{Name: "webos", Repo: "webos"},
+	}
+	for _, m := range modules {
+		b.Reset()
+		if err := redirectTemplate.Execute(&b, map[string]string{
+			"Name": fmt.Sprintf("go.chrisrx.dev/%s", m.Name),
+			"Repo": fmt.Sprintf("https://github.com/ChrisRx/%s", m.Repo),
+		}); err != nil {
+			return err
+		}
+		if err := os.WriteFile(filepath.Base(m.Name), b.Bytes(), 0644); err != nil {
+			return err
+		}
 	}
 	return nil
 }
+
+var redirectTemplate = template.Must(template.New("").Parse(`<html>
+  <head>
+    <meta name="go-import" content="{{ .Name }} git {{ .Repo }}">
+    <meta name="go-source" content="{{ .Name }} {{ .Repo }} {{ .Repo }}/tree/main{/dir} {{ .Repo }}/tree/main{/dir}/{file}#L{line}">
+    <meta name="robots" content="noindex">
+    <meta http-equiv="refresh" content="0; url=https://pkg.go.dev/{{ .Name }}">
+  </head>
+  <body>
+    Redirecting to <a href="https://pkg.go.dev/{{ .Name }}">pkg.go.dev/{{ .Name }}</a>.
+  </body>
+</html>
+`))
 
 func ReadPosts(path string) (posts []pages.Post, _ error) {
 	if err := filepath.WalkDir(path, func(path string, d fs.DirEntry, err error) error {
