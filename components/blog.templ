@@ -1,0 +1,94 @@
+package components
+
+import (
+	"context"
+	"io"
+	"path"
+	"time"
+
+	chromahtml "github.com/alecthomas/chroma/v3/formatters/html"
+	highlighting "github.com/yuin/goldmark-highlighting/v3"
+	"github.com/yuin/goldmark/v2/ast"
+	"github.com/yuin/goldmark/v2/parser"
+	"github.com/yuin/goldmark/v2/renderer"
+	"github.com/yuin/goldmark/v2/renderer/html"
+	"go.chrisrx.dev/x/must"
+	"go.chrisrx.dev/x/strings"
+
+	"github.com/ChrisRx/chrisrx-dev/extensions"
+)
+
+type Post struct {
+	Title   string
+	Date    time.Time
+	Content string
+}
+
+func (post Post) Render() templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, w io.Writer) (err error) {
+		p := parser.New(parser.WithExtensions(highlighting.Parser))
+		r := html.New(html.WithExtensions(
+			highlighting.NewHTMLRenderer(
+				highlighting.WithStyle("catppuccin-mocha"),
+				highlighting.WithFormatterOptions(
+					chromahtml.WithLineNumbers(false),
+				),
+				highlighting.WithCodeBlockFormatterOptions(
+					func(n *ast.CodeBlock, source []byte, _ renderer.Context) []chromahtml.Option {
+						switch language := must.Get0(n.Language(source)); language {
+						case "go":
+							return []chromahtml.Option{
+								chromahtml.WithLineNumbers(true),
+							}
+						default:
+							return nil
+						}
+					},
+				),
+			),
+			extensions.NewEnlargeableImageRenderer(ImageModal),
+		))
+		doc := p.Parse([]byte(post.Content))
+		return r.Render(w, []byte(post.Content), doc)
+	})
+}
+
+templ BlogPosts(posts ...Post) {
+	<style type="text/tailwindcss">
+		@tailwind utilities;
+		@layer utilities {
+			.post p {
+				@apply text-xl font-comic-sans;
+			}
+			.post pre:has(code) {
+				@apply text-sm m-5 p-5;
+				background-color: rgba(33, 33, 33, 0.83);
+				overflow-y: auto;
+			}
+			.post a {
+				@apply text-purple-400;
+				text-decoration: underline;
+			}
+		}
+	</style>
+	for _, p := range posts {
+		<div class="text-white">
+			<h1 class="text-3xl">{ p.Title }</h1>
+			<h3 class="text-md mb-5">Published { p.Date.Format(time.RFC1123) }</h3>
+			<div class="post">
+				@p.Render()
+			</div>
+		</div>
+		<div class="p-5">
+			<img src="/assets/images/bar.gif" class="w-full object-contain object-center"/>
+		</div>
+	}
+}
+
+templ BlogList(posts ...Post) {
+	<ul>
+		for _, post := range posts {
+			<li class="text-green-700"><a href={ templ.SafeURL(path.Join("/blog", post.Date.Format("2006"), strings.Slug(post.Title), "/")) }>{ post.Date.Format("2006-01-02") } - { post.Title }</a></li>
+		}
+	</ul>
+}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"cmp"
 	"fmt"
 	"io/fs"
 	"log"
@@ -10,6 +11,7 @@ import (
 	"os"
 	"path/filepath"
 	"text/template"
+	"time"
 
 	"github.com/a-h/templ"
 	"github.com/goccy/go-yaml"
@@ -18,7 +20,9 @@ import (
 	"go.chrisrx.dev/x/errors"
 	"go.chrisrx.dev/x/must"
 	"go.chrisrx.dev/x/slices"
+	"go.chrisrx.dev/x/strings"
 
+	"github.com/ChrisRx/chrisrx-dev/components"
 	"github.com/ChrisRx/chrisrx-dev/pages"
 )
 
@@ -32,6 +36,7 @@ var UserKey = context.Key[string]()
 
 func main() {
 	ctx := context.Shutdown()
+	defer ctx.Close()
 
 	posts := must.Ok(ReadPosts("posts/"))
 	if opts.Output {
@@ -45,10 +50,11 @@ func main() {
 		Addr: opts.Addr,
 		Handler: func() http.Handler {
 			mux := http.NewServeMux()
-			mux.Handle("/", templ.Handler(pages.Index()))
-			mux.Handle("/blog.html", templ.Handler(pages.Blog(posts)))
-			mux.Handle("/packages.html", templ.Handler(pages.Packages()))
+			mux.Handle("/{$}", templ.Handler(pages.Index(slices.Truncate(posts, 5))))
 			mux.Handle("/assets/", http.FileServer(opts.Dir))
+			mux.Handle("/archive/{$}", templ.Handler(pages.BlogArchive(posts...)))
+			mux.Handle("/blog/{$}", templ.Handler(pages.Blog(posts...)))
+			mux.Handle("/blog/", http.FileServer(opts.Dir))
 			return mux
 		}(),
 		BaseContext: func(net.Listener) context.Context {
@@ -67,26 +73,42 @@ func main() {
 	}
 }
 
-func generate(ctx context.Context, posts []pages.Post) error {
+func generate(ctx context.Context, posts []components.Post) error {
 	var b bytes.Buffer
-	if err := pages.Index().Render(ctx, &b); err != nil {
+	if err := pages.Index(slices.Truncate(posts, 5)).Render(ctx, &b); err != nil {
 		return err
 	}
 	if err := os.WriteFile("index.html", b.Bytes(), 0644); err != nil {
 		return err
 	}
 	b.Reset()
-	if err := pages.Blog(posts).Render(ctx, &b); err != nil {
+
+	for _, post := range posts {
+		dir := filepath.Join("blog", post.Date.Format("2006"), strings.Slug(post.Title))
+		if err := os.MkdirAll(dir, 0755); err != nil && err != os.ErrExist {
+			return fmt.Errorf("failed to create dir %q: %v", dir, err)
+		}
+
+		var b bytes.Buffer
+		if err := pages.Blog(post).Render(ctx, &b); err != nil {
+			return err
+		}
+		if err := os.WriteFile(filepath.Join(dir, "index.html"), b.Bytes(), 0644); err != nil {
+			return err
+		}
+	}
+
+	if err := pages.Blog(posts...).Render(ctx, &b); err != nil {
 		return err
 	}
-	if err := os.WriteFile("blog.html", b.Bytes(), 0644); err != nil {
+	if err := os.WriteFile("blog/index.html", b.Bytes(), 0644); err != nil {
 		return err
 	}
 	b.Reset()
-	if err := pages.Packages().Render(ctx, &b); err != nil {
+	if err := pages.BlogArchive(posts...).Render(ctx, &b); err != nil {
 		return err
 	}
-	if err := os.WriteFile("packages.html", b.Bytes(), 0644); err != nil {
+	if err := os.WriteFile("archive/index.html", b.Bytes(), 0644); err != nil {
 		return err
 	}
 	modules := []struct {
@@ -131,7 +153,7 @@ var redirectTemplate = template.Must(template.New("").Parse(`<html>
 </html>
 `))
 
-func ReadPosts(path string) (posts []pages.Post, _ error) {
+func ReadPosts(path string) (posts []components.Post, _ error) {
 	if err := filepath.WalkDir(path, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
@@ -149,26 +171,18 @@ func ReadPosts(path string) (posts []pages.Post, _ error) {
 			return fmt.Errorf("missing header")
 		}
 
-		var post pages.Post
+		var post components.Post
 		if err := yaml.Unmarshal(parts[0], &post); err != nil {
 			return err
 		}
 		post.Content = string(parts[1])
 		posts = append(posts, post)
 		return nil
-
 	}); err != nil {
 		return nil, err
 	}
-	slices.SortFunc(posts, func(x, y pages.Post) int {
-		switch {
-		case x.Date.Equal(y.Date):
-			return 0
-		case x.Date.Before(y.Date):
-			return 1
-		default:
-			return -1
-		}
+	slices.SortFunc(posts, func(x, y components.Post) int {
+		return -cmp.Compare(x.Date.Format(time.RFC3339), y.Date.Format(time.RFC3339))
 	})
 	return posts, nil
 }

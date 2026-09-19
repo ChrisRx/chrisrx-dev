@@ -6,7 +6,7 @@ env:
 tasks:
   dev:
     cmds:
-      - templ generate
+      - go tool templ generate
         --watch
         --proxy="http://{{ .LOCAL_DEV_ADDR }}"
         --open-browser=false
@@ -17,4 +17,4 @@ tasks:
     env:
       LOCAL_DEV_OUTPUT: true
     cmds:
-      - templ generate && go run *.go
+      - go tool templ generate && go run *.go

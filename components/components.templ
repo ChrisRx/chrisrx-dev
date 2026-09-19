@@ -1,0 +1,108 @@
+package components
+
+templ Page() {
+	<!DOCTYPE html>
+	<html>
+		{ children... }
+	</html>
+}
+
+templ Head(opts ...Option) {
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		{ children... }
+	</head>
+}
+
+templ Body(opts ...Option) {
+	<body { NewAttrs(opts)... }>
+		{ children... }
+	</body>
+}
+
+templ Div(opts ...Option) {
+	<div { NewAttrs(opts)... }>
+		{ children... }
+	</div>
+}
+
+templ Card(opts ...Option) {
+	@Div(mergeOptions(
+		opts,
+		Class("w-full bg-card text-card-foreground shadow-xl"),
+	)...) {
+		{ children... }
+	}
+}
+
+templ Header(opts ...Option) {
+	@Div(mergeOptions(
+		opts,
+		Class("flex flex-row justify-between"),
+	)...) {
+		{ children... }
+	}
+}
+
+templ Title(opts ...Option) {
+	@Div(mergeOptions(
+		opts,
+	)...) {
+		{ children... }
+	}
+}
+
+templ Content(opts ...Option) {
+	@Div(mergeOptions(
+		opts,
+		Class("p6"),
+	)...) {
+		{ children... }
+	}
+}
+
+script openModal(id string) {
+    const modal = document.getElementById(id);
+    if (modal) {
+        modal.showModal();
+    }
+}
+
+templ ImageModal(id string, src string, alt string) {
+	<div class="flex justify-center">
+		<div class="border-2 border-[#727a83] p-2">
+			<img
+				src={ src }
+				alt={ alt }
+				class="block cursor-pointer hover:opacity-95 transition-opacity w-[80vh] max-w-full h-auto"
+				onclick={ openModal(id) }
+			/>
+		</div>
+	</div>
+	<dialog
+		id={ id }
+		_="on click if event.target is me then call me.close()"
+		class="m-auto lg:max-w-3xl bg-transparent backdrop:bg-black/70"
+	>
+		@Card(WithAttrs("id", id), Class("bg-silver", "border-1", "border-grey")) {
+			@Header(Class("bg-windows-blue h-[22px]")) {
+				@Title(Class("text-[#f5f5f5]")) {
+					<div class="h-full flex items-center font-bold text-[6px] ml-0.5">
+						Netscape Navigator 3.0
+					</div>
+				}
+				<div class="flex">
+					<form method="dialog" class="flex">
+						<button class="flex focus:outline-none">
+							<img class="border-0 object-right object-fill m-0.5" src="/assets/images/btn-close@2x.png"/>
+						</button>
+					</form>
+				</div>
+			}
+			@Content(Class("overflow-auto", "bg-blue-maze", "content")) {
+				<img src={ src } class="lg object-contain"/>
+			}
+		}
+	</dialog>
+}
