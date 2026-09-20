@@ -39,10 +39,10 @@ func main() {
 	defer ctx.Close()
 
 	posts := must.Ok(ReadPosts("posts/"))
+	if err := generate(ctx, posts); err != nil {
+		log.Fatal(err)
+	}
 	if opts.Output {
-		if err := generate(ctx, posts); err != nil {
-			log.Fatal(err)
-		}
 		return
 	}
 
@@ -73,18 +73,20 @@ func main() {
 	}
 }
 
+const staticDir = "docs"
+
 func generate(ctx context.Context, posts []components.Post) error {
 	var b bytes.Buffer
 	if err := pages.Index(slices.Truncate(posts, 5)).Render(ctx, &b); err != nil {
 		return err
 	}
-	if err := os.WriteFile("index.html", b.Bytes(), 0644); err != nil {
+	if err := writeFile(filepath.Join(staticDir, "index.html"), b.Bytes()); err != nil {
 		return err
 	}
 	b.Reset()
 
 	for _, post := range posts {
-		dir := filepath.Join("blog", post.Date.Format("2006"), strings.Slug(post.Title))
+		dir := filepath.Join(staticDir, "blog", post.Date.Format("2006"), strings.Slug(post.Title))
 		if err := os.MkdirAll(dir, 0755); err != nil && err != os.ErrExist {
 			return fmt.Errorf("failed to create dir %q: %v", dir, err)
 		}
@@ -93,7 +95,7 @@ func generate(ctx context.Context, posts []components.Post) error {
 		if err := pages.Blog(post).Render(ctx, &b); err != nil {
 			return err
 		}
-		if err := os.WriteFile(filepath.Join(dir, "index.html"), b.Bytes(), 0644); err != nil {
+		if err := writeFile(filepath.Join(dir, "index.html"), b.Bytes()); err != nil {
 			return err
 		}
 	}
@@ -101,14 +103,14 @@ func generate(ctx context.Context, posts []components.Post) error {
 	if err := pages.Blog(posts...).Render(ctx, &b); err != nil {
 		return err
 	}
-	if err := os.WriteFile("blog/index.html", b.Bytes(), 0644); err != nil {
+	if err := writeFile(filepath.Join(staticDir, "blog/index.html"), b.Bytes()); err != nil {
 		return err
 	}
 	b.Reset()
 	if err := pages.BlogArchive(posts...).Render(ctx, &b); err != nil {
 		return err
 	}
-	if err := os.WriteFile("archive/index.html", b.Bytes(), 0644); err != nil {
+	if err := writeFile(filepath.Join(staticDir, "archive/index.html"), b.Bytes()); err != nil {
 		return err
 	}
 	modules := []struct {
@@ -133,11 +135,18 @@ func generate(ctx context.Context, posts []components.Post) error {
 		}); err != nil {
 			return err
 		}
-		if err := os.WriteFile(filepath.Base(m.Name), b.Bytes(), 0644); err != nil {
+		if err := writeFile(filepath.Join(staticDir, filepath.Base(m.Name)), b.Bytes()); err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+func writeFile(path string, data []byte) error {
+	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil && err != os.ErrExist {
+		return fmt.Errorf("failed to create dir %q: %v", filepath.Dir(path), err)
+	}
+	return os.WriteFile(path, data, 0644)
 }
 
 var redirectTemplate = template.Must(template.New("").Parse(`<html>
@@ -176,7 +185,9 @@ func ReadPosts(path string) (posts []components.Post, _ error) {
 			return err
 		}
 		post.Content = string(parts[1])
-		posts = append(posts, post)
+		if !post.Draft {
+			posts = append(posts, post)
+		}
 		return nil
 	}); err != nil {
 		return nil, err

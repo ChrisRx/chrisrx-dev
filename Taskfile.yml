@@ -4,17 +4,23 @@ env:
   LOCAL_DEV_ADDR: localhost:8080
 
 tasks:
+  new:
+    cmds:
+      - go run cmd/newpost/main.go
+
   dev:
+    env:
+      LOCAL_DEV_DIR: docs
     cmds:
       - go tool templ generate
         --watch
         --proxy="http://{{ .LOCAL_DEV_ADDR }}"
         --open-browser=false
-        --cmd="go run ."
+        --cmd="go run cmd/dev-server/main.go"
 
   generate:
     aliases: [gen]
     env:
       LOCAL_DEV_OUTPUT: true
     cmds:
-      - go tool templ generate && go run *.go
+      - go tool templ generate && go run cmd/dev-server/main.go

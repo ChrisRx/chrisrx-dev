@@ -19,9 +19,10 @@ import (
 )
 
 type Post struct {
-	Title   string
-	Date    time.Time
-	Content string
+	Title   string    `yaml:"title"`
+	Date    time.Time `yaml:"date"`
+	Draft   bool      `yaml:"draft"`
+	Content string    `yaml:"-"`
 }
 
 func (post Post) Render() templ.Component {
