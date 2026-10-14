@@ -1,0 +1,11 @@
+<html>
+  <head>
+    <meta name="go-import" content="go.chrisrx.dev/psx git https://github.com/ChrisRx/psxsdk">
+    <meta name="go-source" content="go.chrisrx.dev/psx https://github.com/ChrisRx/psxsdk https://github.com/ChrisRx/psxsdk/tree/main{/dir} https://github.com/ChrisRx/psxsdk/tree/main{/dir}/{file}#L{line}">
+    <meta name="robots" content="noindex">
+    <meta http-equiv="refresh" content="0; url=https://pkg.go.dev/go.chrisrx.dev/psx">
+  </head>
+  <body>
+    Redirecting to <a href="https://pkg.go.dev/go.chrisrx.dev/psx">pkg.go.dev/go.chrisrx.dev/psx</a>.
+  </body>
+</html>
